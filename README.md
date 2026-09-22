@@ -13,22 +13,21 @@ The model code and interface was written by Alessandro Altoè and Sarah Verhulst
 Changes in the IC/CN stages (version 1.2) were introduced by Alejandro Osses Vecchi and Sarah Verhulst.
 Python scripts (ExampleSimulation.py, ExampleAnalysis.py, get_RAM_stims.py, OHC_ind.py, ParallelRAMSimulationsEFR.py) were updated by Brent Nissens in November 2025.
 
-#####################
-How to run the model
-#####################
+
+## How to run the model
 
 1. INSTALL NUMPY AND SCIPY (anaconda), check whether you should install 32 or 64 bit!
    The model works on python 2.7 and also on 3.6 (with some future warnings)
    verify with some simple code or the "pyversion" command whether python can
    be called from the MATLAB command line (check the internet for examples)
-2. COMPILE THE tridiag.so or tridiag.dll (in case you use Windows) file, i.e. the tridiagonal matrix solver part of the cochlear mechanics
+2. COMPILE THE `tridiag.so` or `tridiag.dll` (in case you use Windows) file, i.e. the tridiagonal matrix solver part of the cochlear mechanics
 
    2.1 for mac/linux:
 
    open a terminal, go to the model folder and type:
-   gcc -shared -fpic -O3 -ffast-math -o tridiag.so cochlea_utils.c
+   `gcc -shared -fpic -O3 -ffast-math -o tridiag.so cochlea_utils.c`
    OR run build.sh script:
-   ./build.sh
+   `./build.sh`
 
    2.2 for windows:
 
@@ -37,50 +36,58 @@ How to run the model
    After the installation is complete, run the migw-w64.bat file from the installation directory (e.g. C:\Program Files\mingw-w64\x86_64-8.1.0-win32-seh-rt_v6-rev0\).
    Via the terminal go to the model’s folder.
    Run the command:
+   
+   ```
    gcc --version (to check if gcc was successfully installed)
    gcc -shared -fpic -O3 -ffast-math -o tridiag.dll cochlea_utils.c
-   OR run build.bat script
-3. Unzip the "Poles" folder
-4. RUN THE MATLAB SCRIPT: ExampleSimulation.m
+   ```
+   
+   OR run the build.bat script
+   
+4. Unzip the "Poles" folder
+5. RUN THE MATLAB SCRIPT: `ExampleSimulation.m`
+
    When you run the model and everything works: "running human auditory model 2018 (version 1.2): Verhulst, Altoe, Vasilkov" printed is in the command window.
    Depending on the number of CPU cores you have, you can usually run 6-10 stimuli at once (i.e., size of the stim vector)
    Keep the stimuli short! 100-200ms stimuli work well. The model does not crash for long stimuli, but it may take very long before it is ready. If you want to run speech, please start with shorter segments first and find your optimal approach. Note that you may have to limit the number of parameters you save to optimize disk space, if you run long simulations.
-5. RUN THE MATLAB SCRIPT: ExampleAnalysis.m
-6. NOTE TO PYTHON FANS:
+   
+7. RUN THE MATLAB SCRIPT: `ExampleAnalysis.m`
+8. NOTE TO PYTHON FANS:
    Because all the model code is written in python, it is possible to run the model without MATLAB. MATLAB is only used here to interface with the model: design the stimuli, set the parameters and plot the results.
 
    The following Python scripts have been updated by Brent Nissens in November 2025 to provide a complete Python-based workflow:
 
-   6.1 RUNNING A SINGLE SIMULATION: ExampleSimulation.py
+   6.1 RUNNING A SINGLE SIMULATION: `ExampleSimulation.py`
    This script provides a simple interface to run a single model2018 simulation with a RAM (Rectangular Amplitude Modulation) stimulus.
    It automatically generates the RAM stimulus, loads a poles profile, runs the model, calculates the EFR (Envelope Following Response),
    and displays/saves the results.
 
    Usage:
-   python ExampleSimulation.py
+   ```python ExampleSimulation.py```
 
    Note: While the script uses RAM stimuli by default (generated via get_RAM_stims.py), any stimulus the user chooses can be used by modifying the script to load or generate custom stimuli.
 
-   6.2 ANALYZING A SIMULATION: ExampleAnalysis.py
+   6.2 ANALYZING A SIMULATION: `ExampleAnalysis.py`
    This script provides a simple analysis interface for a single simulation output. It loads the model output and creates comprehensive plots.
 
    Usage:
-   python ExampleAnalysis.py
+   ```python ExampleAnalysis.py```
 
    The script expects simulation results to be saved in 'Simulations.mat' (or modify the script to point to your output file).
 
-   6.3 GENERATING RAM STIMULI: get_RAM_stims.py
+   6.3 GENERATING RAM STIMULI: `get_RAM_stims.py`
    This script generates RAM (Rectangular Amplitude Modulation) stimuli for use with the model.
 
    Function signature:
-   stim = get_RAM_stims(fs, fRAM)
+   ```stim = get_RAM_stims(fs, fRAM)```
 
-   6.4 CREATING CUSTOM POLES FROM AUDIOGRAMS: OHC_ind.py
+   6.4 CREATING CUSTOM POLES FROM AUDIOGRAMS: `OHC_ind.py`
+   
    This script creates custom poles profiles based on individual subject audiogram values. It converts hearing loss data
    (frequency-specific hearing thresholds in dB HL) into the poles format required by the model.
 
    Usage:
-   OHC_ind.ohc_ind(name='SubjectName', hl_freqs_hz=[125, 250, 500, ...], hl_db=[0, 5, 10, ...], ...)
+   ```OHC_ind.ohc_ind(name='SubjectName', hl_freqs_hz=[125, 250, 500, ...], hl_db=[0, 5, 10, ...], ...)```
 
    The script outputs:
 
@@ -90,7 +97,7 @@ How to run the model
    This allows users to simulate subjects with custom hearing profiles rather than using only the pre-defined profiles
    in the Poles folder.
 
-   6.5 PARALLEL SIMULATION PIPELINE: ParallelRAMSimulationsEFR.py
+   6.5 PARALLEL SIMULATION PIPELINE: `ParallelRAMSimulationsEFR.py`
    This script provides a complete pipeline for running multiple subject simulations in parallel, calculating EFR values,
    and saving results to CSV. It is particularly useful for batch processing multiple subjects with different audiograms.
 
@@ -103,7 +110,7 @@ How to run the model
    5. Saves results to a CSV file with subject names and EFR values
 
    Usage:
-   python ParallelRAMSimulationsEFR.py
+   ```python ParallelRAMSimulationsEFR.py```
 
    The script uses Python's concurrent.futures for efficient parallel processing and includes progress bars
    for monitoring batch simulations.
@@ -115,20 +122,24 @@ How to run the model
 7. MAKING MODIFICATIONS BEYOND THE STANDARD PARAMETERS
 
    7.1 The "Poles" folder has a whole range of auditory profiles (cochlear gain loss) that can be simulated.
+   
    Each folder corresponds to a specific audiogram shape:
-   FlatXX refers to a fixed dB HL loss across CF.
-   SlopeXX refers to a sloping HF loss starting from 1 kHz and XX corresponds to the loss in dB HL at 8 kHz.
-   SlopeXX_Y refers to a sloping HF loss from 1 kHz and a fixed Y dB HL loss for CFs below 1 kHz.
+   - FlatXX refers to a fixed dB HL loss across CF.
+   - SlopeXX refers to a sloping HF loss starting from 1 kHz and XX corresponds to the loss in dB HL at 8 kHz.
+   - SlopeXX_Y refers to a sloping HF loss from 1 kHz and a fixed Y dB HL loss for CFs below 1 kHz.
+    
    In each folder, you find the alpha\*,A values that should be loaded into the model (i.e. the StartingPoles.dat file for the considered HL profile). The audiogram shape can be seen by plotting the first and second line of the profile.txt file against eachother. The Poles.mat file has the HI starting poles and corresponding QERBs across the frequencies in fres as well as the the NH reference poles and QERBs.
 
    7.2 The middle-ear filter parameters can be changed in line 226-227 of cochlear_model2018.py
 
    7.3 The cochlear compression slope
-   can be changed in line 414 of cochlear_model2018.py by changing the 0.31 to another value
-   self.PoleE = np.zeros_like(self.x)+0.31 #saturating pole
-   note that the "compression_slope=0.4" parameter in line 145 is NOT active (it came from earlier version)
+   can be changed in line 414 of `cochlear_model2018.py` by changing the 0.31 to another value:
 
-   7.4 The cochlear irregularity percentage (for reflection-source emissions) can be changed in lines 146 and 147 in cochlear_model2018.py by modifying the percentage=0.05 (reflection-source strenght) and kneevar=1 (horizontal random dB shift of vbm,30 compresssion kneepoint)
+   ```self.PoleE = np.zeros_like(self.x)+0.31 #saturating pole```
+   
+   note that the `compression_slope=0.4` parameter in line 145 is NOT active (it came from earlier version)
+
+   7.4 The cochlear irregularity percentage (for reflection-source emissions) can be changed in lines 146 and 147 in `cochlear_model2018.py` by modifying the `percentage=0.05` (reflection-source strenght) and `kneevar=1` (horizontal random dB shift of vbm,30 compression kneepoint)
 
    7.4 The stimulus level at which the nonlinearity kicks (i.e. the vbm at which compression starts, vbm,30) cannot be changed easily, the vbm thresholds need to be derived from simulations using linear models. It is currently set to a fixed BM vel/disp value corresponding to 30-dB pure-tone response at 1 kHz (see line 415,416).
 
@@ -141,9 +152,7 @@ Happy Modeling!
 
 Sarah and the Hearing Technology group
 
-###########
-References
-###########
+## References
 
 Please cite the 2018 Hearing Research paper and other relevant papers when you use the model (or parts of it) for your research. Additional references with information on model specifics and earlier implementations can be found here:
 
@@ -175,6 +184,6 @@ Saremi A, Beutelmann R, Dietz M, Ashida G, Kretzberg J and Verhulst S (2016). A 
 *Journal of the Acoustical Society of America*, 140(3), pp.1618-1634.
 => Shows cochlear mechanical responses to different stimuli and different filterbank models
 
-<p align="center">
+
     <img src="doc/Model_Overview.png" alt="Model Overview" height="50%" width="50%">
 </p>
