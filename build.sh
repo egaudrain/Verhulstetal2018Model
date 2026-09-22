@@ -1,4 +1,4 @@
 #!/bin/bash
 
-clear
+#clear
 gcc -shared -fpic -O3 -ffast-math -o tridiag.so cochlea_utils.c 
