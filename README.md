@@ -25,9 +25,15 @@ Python scripts (ExampleSimulation.py, ExampleAnalysis.py, get_RAM_stims.py, OHC_
    2.1 for mac/linux:
 
    open a terminal, go to the model folder and type:
-   `gcc -shared -fpic -O3 -ffast-math -o tridiag.so cochlea_utils.c`
+   ```
+   gcc -shared -fpic -O3 -ffast-math -o tridiag.so cochlea_utils.c
+   ```
+   
    OR run build.sh script:
-   `./build.sh`
+   ```
+   chmod u+x build.sh
+   ./build.sh
+   ```
 
    2.2 for windows:
 
@@ -38,7 +44,7 @@ Python scripts (ExampleSimulation.py, ExampleAnalysis.py, get_RAM_stims.py, OHC_
    Run the command:
    
    ```
-   gcc --version (to check if gcc was successfully installed)
+   gcc --version  # (to check if gcc was successfully installed)
    gcc -shared -fpic -O3 -ffast-math -o tridiag.dll cochlea_utils.c
    ```
    
